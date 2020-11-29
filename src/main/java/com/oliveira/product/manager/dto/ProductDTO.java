@@ -1,23 +1,13 @@
-package com.oliveira.product.manager.model;
+package com.oliveira.product.manager.dto;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-@Entity
-public class Product implements Serializable {
+public class ProductDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -26,16 +16,14 @@ public class Product implements Serializable {
 
     private BigDecimal price;
 
-    @CreationTimestamp
     private Date createdAt;
 
-    @UpdateTimestamp
     private Date updatedAt;
 
-    public Product() {
+    public ProductDTO() {
     }
 
-    public Product(Long id, String name, String description, BigDecimal price, Date createdAt, Date updatedAt) {
+    public ProductDTO(Long id, String name, String description, BigDecimal price, Date createdAt, Date updatedAt) {
         super();
         this.id = id;
         this.name = name;

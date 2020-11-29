@@ -1,18 +1,20 @@
 package com.oliveira.product.manager.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.oliveira.product.manager.dto.ProductDTO;
 import com.oliveira.product.manager.model.Product;
+
+import java.util.List;
 
 public interface ProductService {
 
-	public List<Product> findAll();
+    public List<ProductDTO> findAll();
 
-	public Optional<Product> findById(Long id);
+    public ProductDTO findById(Long id);
 
-	public Product save(Product product);
+    public ProductDTO save(ProductDTO product);
 
-	public void deleteById(Long id);
+    public void deleteById(Long id);
+
+    public boolean exist(Long id);
 
 }

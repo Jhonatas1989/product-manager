@@ -1,68 +1,55 @@
 package com.oliveira.product.manager.resource;
 
-import java.util.List;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
+import com.oliveira.product.manager.dto.ProductDTO;
+import com.oliveira.product.manager.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.oliveira.product.manager.model.Product;
-import com.oliveira.product.manager.service.ProductService;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
 public class ProductResource {
 
-	@Autowired
-	private ProductService productService;
+    @Autowired
+    private ProductService productService;
 
-	@GetMapping
-	public ResponseEntity<List<Product>> findAll() {
-		return ResponseEntity.ok(productService.findAll());
-	}
+    @GetMapping
+    public ResponseEntity<List<ProductDTO>> findAll() {
+        return ResponseEntity.ok(productService.findAll());
+    }
 
-	@PostMapping
-	public ResponseEntity<Product> create(@Valid @RequestBody Product product) {
-		return ResponseEntity.ok(productService.save(product));
-	}
+    @PostMapping
+    public ResponseEntity<ProductDTO> create(@Valid @RequestBody ProductDTO product) {
+        return ResponseEntity.ok(productService.save(product));
+    }
 
-	@GetMapping("/{id}")
-	public ResponseEntity<Product> findById(@PathVariable Long id) {
-		Optional<Product> stock = productService.findById(id);
-		if (!stock.isPresent()) {
-			ResponseEntity.badRequest().build();
-		}
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDTO> findById(@PathVariable Long id) {
+        return ResponseEntity.ok(productService.findById(id));
+    }
 
-		return ResponseEntity.ok(stock.get());
-	}
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO product) {
+        if (!productService.exist(id)) {
+            ResponseEntity.badRequest().build();
+        }
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Product> update(@PathVariable Long id, @Valid @RequestBody Product product) {
-		if (!productService.findById(id).isPresent()) {
-			ResponseEntity.badRequest().build();
-		}
+        product.setId(id);
 
-		return ResponseEntity.ok(productService.save(product));
-	}
+        return ResponseEntity.ok(productService.save(product));
+    }
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable Long id) {
-		if (!productService.findById(id).isPresent()) {
-			ResponseEntity.badRequest().build();
-		}
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+        if (!productService.exist(id)) {
+            ResponseEntity.badRequest().build();
+        }
 
-		productService.deleteById(id);
+        productService.deleteById(id);
 
-		return ResponseEntity.ok().build();
-	}
+        return ResponseEntity.ok().build();
+    }
 }
